@@ -1,0 +1,79 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #5b4261; /* Fondo  */
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    600px;
+    margin:auto;
+    background-color:#fff;
+    padding:20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #562d59; /* Morado */
+    text-align: center;
+}
+
+input {
+    padding: 10px;
+    font-size: 16px;
+    margin-right: 10px;
+    width: calc(100% - 120px);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #9a3c93; /* Morado */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #ec5eb1;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: #f9f9f9;
+    margin: 5px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+}
+
+li.completed {
+    text-decoration: line-through;
+    color: #888;
+}
+
+li button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+li button img {
+    width: 20px;
+    height: 20px;
+}
+
+li button:hover img {
+    filter: brightness(0.8);
+}
