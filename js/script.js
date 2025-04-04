@@ -10,7 +10,7 @@ function addTodo() {
 
     const editButton = document.createElement('button');
     const editIcon = document.createElement('img');
-    editIcon.src = 'img/1.png'; // img
+    editIcon.src = 'Img/1.png'; // img
     editButton.appendChild(editIcon);
     editButton.addEventListener('click', (event) => {
         event.stopPropagation(); 
@@ -22,7 +22,7 @@ function addTodo() {
 
     const deleteButton = document.createElement('button');
     const deleteIcon = document.createElement('img');
-    deleteIcon.src = 'img/2.png'; // Img
+    deleteIcon.src = 'Img/2.png'; // Img
     deleteButton.appendChild(deleteIcon);
     deleteButton.addEventListener('click', (event) => {
         event.stopPropagation(); 
