@@ -10,7 +10,7 @@ function addTodo() {
 
     const editButton = document.createElement('button');
     const editIcon = document.createElement('img');
-    editIcon.src = '1.png'; // img
+    editIcon.src = 'img/1.png'; // img
     editButton.appendChild(editIcon);
     editButton.addEventListener('click', (event) => {
         event.stopPropagation(); 
@@ -19,4 +19,22 @@ function addTodo() {
             todoItem.firstChild.textContent = newTitle;
         }
     });
+
+    const deleteButton = document.createElement('button');
+    const deleteIcon = document.createElement('img');
+    deleteIcon.src = 'img/2.png'; // Img
+    deleteButton.appendChild(deleteIcon);
+    deleteButton.addEventListener('click', (event) => {
+        event.stopPropagation(); 
+        todoList.removeChild(todoItem);
+    });
+
+    todoItem.appendChild(editButton);
+    todoItem.appendChild(deleteButton);
+    todoItem.addEventListener('click', () => {
+        todoItem.classList.toggle('completed');
+    });
+
+    todoList.appendChild(todoItem);
+    document.getElementById('todo-title').value = '';
 }
