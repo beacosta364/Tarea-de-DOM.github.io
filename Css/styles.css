@@ -1,78 +1,746 @@
+/* 
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #5b4261; /* Fondo  */
+    background-color: #5b4261;
     margin: 0;
     padding: 20px;
+    min-height: 100vh;
 }
 
 .container {
-    margin:auto;
-    background-color:#fff;
-    padding:20px;
+    width: 100%;
+    max-width: 850px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 25px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-    color: #562d59; /* Morado */
+    color: #562d59;
     text-align: center;
+    margin-top: 0;
+}
+
+h2 {
+    color: #562d59;
+}
+
+.list-creator,
+.task-creator {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input,
+button {
+    font-family: inherit;
+    font-size: 16px;
 }
 
 input {
+    flex: 1;
+    min-width: 0;
     padding: 10px;
-    font-size: 16px;
-    margin-right: 10px;
-    width: calc(100% - 120px);
     border: 1px solid #ddd;
     border-radius: 5px;
 }
 
 button {
     padding: 10px 15px;
-    font-size: 16px;
-    background-color: #9a3c93; /* Morado */
+    background-color: #9a3c93;
     color: white;
     border: none;
     cursor: pointer;
     border-radius: 5px;
+    transition: background-color 0.2s;
 }
 
 button:hover {
     background-color: #ec5eb1;
 }
 
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid #562d59;
+    outline-offset: 2px;
+}
+
 ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
+    margin: 0;
 }
 
-li {
+#lists-container li,
+#todo-list li {
     background-color: #f9f9f9;
-    margin: 5px 0;
-    padding: 10px;
+    margin: 8px 0;
+    padding: 12px;
     border: 1px solid #ddd;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-li.completed {
+.list-name-button {
+    flex: 1;
+    text-align: left;
+    background-color: transparent;
+    color: #562d59;
+    font-weight: bold;
+}
+
+.list-name-button:hover {
+    background-color: #f0e5f2;
+}
+
+.action-button {
+    padding: 8px 10px;
+    background-color: #777;
+    font-size: 14px;
+}
+
+.delete-button {
+    background-color: #a33b4b;
+}
+
+.delete-button:hover {
+    background-color: #c94b5c;
+}
+
+.secondary-button {
+    background-color: #777;
+    margin-bottom: 15px;
+}
+
+.secondary-button:hover {
+    background-color: #555;
+}
+
+.week-days {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 5px;
+    margin: 20px 0;
+}
+
+.day-button {
+    padding: 10px 4px;
+    background-color: #eee5ef;
+    color: #562d59;
+    font-size: 14px;
+}
+
+.day-button:hover,
+.day-button.active {
+    background-color: #9a3c93;
+    color: white;
+}
+
+#current-day-title {
+    color: #562d59;
+}
+
+.task-title {
+    flex: 1;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+#todo-list li.completed .task-title {
     text-decoration: line-through;
     color: #888;
 }
 
-li button {
-    background-color: transparent;
-    border: none;
+#todo-list li.completed {
+    background-color: #f0f0f0;
+}
+
+.task-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.empty-message {
+    color: #777;
+    text-align: center;
+    padding: 20px 0;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        margin: 5px auto;
+        padding: 15px;
+    }
+
+    .list-creator,
+    .task-creator {
+        flex-direction: column;
+    }
+
+    .week-days {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    #lists-container li,
+    #todo-list li {
+        flex-wrap: wrap;
+    }
+
+    .task-actions {
+        margin-left: auto;
+    }
+}
+
+
+
+ */
+
+/* ========================================
+   1. PALETA Y CONFIGURACIÓN GENERAL
+======================================== */
+
+:root {
+    --navy: #19283D;
+    --navy-light: #263B55;
+    --navy-hover: #31577D;
+
+    --cyan: #16B9D8;
+    --cyan-dark: #078BAE;
+    --cyan-light: #E2F8FC;
+
+    --gray: #747F8D;
+    --gray-light: #EDF1F5;
+    --gray-border: #D9E1E9;
+
+    --white: #FFFFFF;
+    --text: #17263E;
+    --text-muted: #64748B;
+
+    --danger: #E54858;
+    --danger-light: #FDE8EB;
+
+    --radius: 12px;
+    --shadow: 0 8px 28px rgba(15, 35, 60, 0.10);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background:
+        radial-gradient(
+            ellipse at 10% 15%,
+            rgba(22, 185, 216, 0.22),
+            transparent 32%
+        ),
+        radial-gradient(
+            ellipse at 90% 85%,
+            rgba(49, 87, 125, 0.7),
+            transparent 40%
+        ),
+        linear-gradient(135deg, #19283D, #243C59 55%, #17263B);
+
+    color: var(--text);
+    margin: 0;
+    padding: 35px 20px;
+    min-height: 100vh;
+}
+
+/* ========================================
+   2. CONTENEDOR PRINCIPAL
+======================================== */
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+
+    background: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 18px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+}
+
+h1 {
+    color: var(--navy);
+    text-align: center;
+    font-size: clamp(26px, 4vw, 38px);
+    margin: 0 0 30px;
+    letter-spacing: -0.8px;
+}
+
+h2 {
+    color: var(--navy);
+    margin-top: 0;
+}
+
+h3 {
+    color: var(--navy);
+}
+
+/* ========================================
+   3. CAMPOS Y BOTONES
+======================================== */
+
+input,
+button {
+    font-family: inherit;
+    font-size: 15px;
+}
+
+input {
+    width: 100%;
+    min-width: 0;
+    padding: 13px 15px;
+
+    color: var(--text);
+    background: var(--white);
+    border: 1px solid var(--gray-border);
+    border-radius: 9px;
+
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input::placeholder {
+    color: #8492A6;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--cyan-dark);
+    box-shadow: 0 0 0 3px rgba(22, 185, 216, 0.14);
+}
+
+button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 12px 17px;
+
+    background: var(--cyan);
+    color: var(--navy);
+
+    font-weight: 600;
+    border: 1px solid transparent;
+    border-radius: 9px;
+
     cursor: pointer;
+    transition:
+        background-color 0.2s,
+        color 0.2s,
+        transform 0.15s,
+        box-shadow 0.2s;
 }
 
-li button img {
-    width: 20px;
-    height: 20px;
+button:hover {
+    background: #43CBE3;
+    box-shadow: 0 4px 12px rgba(22, 185, 216, 0.18);
 }
 
-li button:hover img {
-    filter: brightness(0.8);
+button:active {
+    transform: scale(0.98);
+}
+
+button:focus-visible {
+    outline: 3px solid rgba(22, 185, 216, 0.45);
+    outline-offset: 3px;
+}
+
+/* ========================================
+   4. FORMULARIOS DE CREACIÓN
+======================================== */
+
+.list-creator,
+.task-creator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.list-creator button,
+.task-creator button {
+    flex-shrink: 0;
+    background: var(--navy);
+    color: var(--white);
+}
+
+.list-creator button:hover,
+.task-creator button:hover {
+    background: var(--navy-hover);
+}
+
+/* ========================================
+   5. LISTAS
+======================================== */
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#lists-container li,
+#todo-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 13px 15px;
+    margin: 9px 0;
+
+    background: #F7F9FC;
+    border: 1px solid #E8EDF3;
+    border-radius: 10px;
+
+    transition:
+        background-color 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+#lists-container li:hover,
+#todo-list li:hover {
+    border-color: #C9D8E7;
+    box-shadow: 0 3px 12px rgba(25, 40, 61, 0.05);
+}
+
+.list-name-button {
+    flex: 1;
+    justify-content: flex-start;
+    text-align: left;
+
+    background: transparent;
+    color: var(--navy);
+    font-weight: 700;
+}
+
+.list-name-button:hover {
+    background: #E6F7FB;
+    color: var(--navy);
+    box-shadow: none;
+}
+
+/* ========================================
+   6. BOTONES SECUNDARIOS Y ELIMINACIÓN
+======================================== */
+
+.action-button {
+    padding: 9px 12px;
+    font-size: 13px;
+
+    background: #E5EBF2;
+    color: var(--navy);
+}
+
+.action-button:hover {
+    background: #D3E0EC;
+    box-shadow: none;
+}
+
+.delete-button {
+    background: var(--danger-light);
+    color: #BD293A;
+}
+
+.delete-button:hover {
+    background: var(--danger);
+    color: var(--white);
+}
+
+.secondary-button {
+    margin-bottom: 20px;
+    background: #E7EDF4;
+    color: var(--navy);
+}
+
+.secondary-button:hover {
+    background: #D4E1ED;
+    box-shadow: none;
+}
+
+/* ========================================
+   7. NAVEGACIÓN POR DÍAS
+======================================== */
+
+.week-days {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 8px;
+    margin: 22px 0 25px;
+}
+
+.day-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    min-height: 75px;
+    padding: 12px 5px;
+
+    background: var(--gray-light);
+    color: var(--navy);
+    border: 1px solid transparent;
+    border-radius: 11px;
+}
+
+.day-button:hover {
+    background: #DDEAF4;
+    box-shadow: none;
+}
+
+.day-button.active {
+    background: linear-gradient(
+        145deg,
+        #1768A8,
+        var(--navy)
+    );
+    color: var(--white);
+    box-shadow: 0 5px 14px rgba(25, 40, 61, 0.18);
+}
+
+.day-button.active:hover {
+    background: var(--navy-hover);
+}
+
+/* ========================================
+   8. TAREAS
+======================================== */
+
+#current-day-title {
+    margin: 15px 0;
+    font-size: 23px;
+    color: var(--navy);
+}
+
+.task-title {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+#todo-list li.completed {
+    background: #F0F8FA;
+    border-color: #D7EEF3;
+}
+
+#todo-list li.completed .task-title {
+    color: var(--text-muted);
+    text-decoration: line-through;
+}
+
+.task-actions {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+}
+
+.empty-message {
+    padding: 24px 12px;
+    color: var(--text-muted);
+    text-align: center;
+    background: #F7F9FC;
+    border: 1px dashed var(--gray-border);
+    border-radius: 10px;
+}
+
+/* ========================================
+   9. ESTADOS DE VISIBILIDAD
+======================================== */
+
+[hidden] {
+    display: none !important;
+}
+
+/* ========================================
+   10. ADAPTACIÓN A MÓVILES
+======================================== */
+
+
+/* ========================================
+   ADAPTACIÓN A CELULARES
+======================================== */
+
+@media (max-width: 700px) {
+    body {
+        padding: 8px;
+    }
+
+    .container {
+        padding: 14px;
+        margin: 0 auto;
+        border-radius: 12px;
+    }
+
+    h1 {
+        font-size: 25px;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    /* Formularios compactos */
+    .list-creator,
+    .task-creator {
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 16px;
+    }
+
+    input {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    button {
+        padding: 9px 11px;
+        font-size: 13px;
+    }
+
+    .list-creator button,
+    .task-creator button {
+        width: auto;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    /* Días de la semana */
+    .week-days {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 5px;
+        margin: 16px 0 20px;
+    }
+
+    .day-button {
+        min-height: 48px;
+        padding: 7px 3px;
+        font-size: 12px;
+        gap: 2px;
+        border-radius: 8px;
+    }
+
+    #current-day-title {
+        font-size: 19px;
+        margin: 12px 0;
+    }
+
+    /* Filas de las listas y tareas */
+    #lists-container li,
+    #todo-list li {
+        padding: 9px;
+        margin: 7px 0;
+        gap: 6px;
+        border-radius: 8px;
+    }
+
+    .list-name-button {
+        padding: 8px 5px;
+        font-size: 13px;
+    }
+
+    .task-title {
+        flex: 1 1 45%;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    /* Botones de editar y eliminar */
+    .task-actions {
+        display: flex;
+        gap: 4px;
+        margin-left: auto;
+    }
+
+    .action-button {
+        padding: 6px 8px;
+        font-size: 11px;
+        border-radius: 6px;
+    }
+
+    .secondary-button {
+        margin-bottom: 14px;
+    }
+
+    .empty-message {
+        padding: 16px 8px;
+        font-size: 13px;
+    }
+}
+
+/* ========================================
+   CELULARES MUY PEQUEÑOS
+======================================== */
+
+@media (max-width: 380px) {
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    .list-creator,
+    .task-creator {
+        gap: 5px;
+    }
+
+    .list-creator button,
+    .task-creator button {
+        padding: 9px 8px;
+        font-size: 12px;
+    }
+
+    .week-days {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .day-button {
+        min-height: 42px;
+        font-size: 11px;
+    }
+
+    #lists-container li,
+    #todo-list li {
+        padding: 7px;
+    }
+
+    .task-title {
+        flex-basis: 40%;
+        font-size: 13px;
+    }
+
+    .action-button {
+        padding: 6px;
+        font-size: 10px;
+    }
 }

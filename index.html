@@ -3,16 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplicación de To-Do List</title>
+    <title>Mi Organizador Semanal</title>
     <link rel="stylesheet" href="Css/styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Mi Lista de Tareas</h1>
-        <input id="todo-title" type="text" placeholder="Nueva tarea">
-        <button id="add-todo">Añadir Tarea</button>
-        <ul id="todo-list"></ul>
+        <h1>Mi Organizador Semanal</h1>
+
+        <!-- Pantalla principal: listas -->
+        <section id="lists-section">
+            <h2>Mis listas</h2>
+
+            <div class="list-creator">
+                <input
+                    id="list-name"
+                    type="text"
+                    placeholder="Nombre de la lista"
+                    maxlength="60"
+                >
+                <button id="add-list">Crear lista</button>
+            </div>
+
+            <ul id="lists-container"></ul>
+        </section>
+
+        <!-- Pantalla de tareas -->
+        <section id="tasks-section" hidden>
+            <button id="back-to-lists" class="secondary-button">
+                ← Volver a mis listas
+            </button>
+
+            <h2 id="current-list-title"></h2>
+
+            <div id="week-days" class="week-days"></div>
+
+            <h3 id="current-day-title"></h3>
+
+            <div class="task-creator">
+                <input
+                    id="todo-title"
+                    type="text"
+                    placeholder="Nueva tarea"
+                    maxlength="200"
+                >
+                <button id="add-todo">Añadir tarea</button>
+            </div>
+
+            <ul id="todo-list"></ul>
+
+            <p id="empty-message" class="empty-message" hidden>
+                No hay tareas para este día.
+            </p>
+        </section>
     </div>
+
     <script src="js/script.js"></script>
 </body>
 </html>
