@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -21,7 +22,9 @@
                     placeholder="Nombre de la lista"
                     maxlength="60"
                 >
-                <button id="add-list">Crear lista</button>
+                <button id="add-list" type="button">
+                    Crear lista
+                </button>
             </div>
 
             <ul id="lists-container"></ul>
@@ -29,16 +32,22 @@
 
         <!-- Pantalla de tareas -->
         <section id="tasks-section" hidden>
-            <button id="back-to-lists" class="secondary-button">
+            <button
+                id="back-to-lists"
+                class="secondary-button"
+                type="button"
+            >
                 ← Volver a mis listas
             </button>
 
             <h2 id="current-list-title"></h2>
 
+            <!-- Selector de días de la semana -->
             <div id="week-days" class="week-days"></div>
 
             <h3 id="current-day-title"></h3>
 
+            <!-- Crear una tarea -->
             <div class="task-creator">
                 <input
                     id="todo-title"
@@ -46,9 +55,12 @@
                     placeholder="Nueva tarea"
                     maxlength="200"
                 >
-                <button id="add-todo">Añadir tarea</button>
+                <button id="add-todo" type="button">
+                    Añadir tarea
+                </button>
             </div>
 
+            <!-- Lista de tareas del día seleccionado -->
             <ul id="todo-list"></ul>
 
             <p id="empty-message" class="empty-message" hidden>
@@ -57,6 +69,64 @@
         </section>
     </div>
 
+    <!-- Ventana emergente para editar tareas y notas -->
+    <div id="task-modal" class="modal" hidden>
+        <div
+            class="modal-content"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+        >
+            <h2 id="modal-title">Editar tarea</h2>
+
+            <!-- Nombre de la tarea -->
+            <label for="modal-task-title">
+                Nombre de la tarea
+            </label>
+            <input
+                id="modal-task-title"
+                type="text"
+                maxlength="200"
+                placeholder="Nombre de la tarea"
+            >
+
+            <!-- Cambiar el día de la tarea -->
+            <label for="modal-task-day">
+                Día de la semana
+            </label>
+            <select id="modal-task-day">
+                <!-- Los días se cargan desde JavaScript -->
+            </select>
+
+            <!-- Nota asociada a la tarea -->
+            <label for="modal-task-note">
+                Nota (opcional)
+            </label>
+            <textarea
+                id="modal-task-note"
+                rows="4"
+                maxlength="1000"
+                placeholder="Escribe detalles, recordatorios o pasos para esta tarea..."
+            ></textarea>
+
+            <!-- Acciones de la ventana -->
+            <div class="modal-actions">
+                <button id="save-task" type="button">
+                    Guardar cambios
+                </button>
+
+                <button
+                    id="cancel-task"
+                    class="secondary-button"
+                    type="button"
+                >
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript de la aplicación -->
     <script src="js/script.js"></script>
 </body>
 </html>
